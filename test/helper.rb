@@ -67,6 +67,7 @@ end
   comments << Comment.new(:post => posts[0], :content => "wow, that was a nice post!", :author=>authors[1])
   comments << Comment.new(:content => "Are you really the best post?", :post => posts[1], :author=>authors[0])
   comments << Comment.new(:content => "Only until someone posts better!", :post => posts[1], :author=>authors[0])
+  comments << Comment.new(:content => "This one has no Author!!!", :post => posts[1], :author=> nil )
   comments.each { |c| c.save }
 
 

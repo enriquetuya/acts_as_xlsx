@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby -w
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'test/unit'
 require "acts_as_xlsx.rb"
 require 'active_record'
@@ -67,7 +69,14 @@ class TestToXlsx < Test::Unit::TestCase
     p = Post.to_xlsx :columns=>[:name, :votes, :content, :ranking, :'comments.last.content', :'comments.first.author.name']
     sheet = p.workbook.worksheets.first
     assert_equal("Name", sheet.rows.first.cells.first.value)
-    assert_equal(Post.last.comments.last.author.name, sheet.rows.last.cells.last.value)
+    assert_equal(Post.last.comments.first.author.name, sheet.rows.last.cells.last.value)
+  end
+
+  def test_nil_chained_column
+    p = Post.to_xlsx :columns=>[:name, :votes, :content, :ranking, :'comments.last.content', :'comments.last.author.name']
+    sheet = p.workbook.worksheets.first
+    assert_equal("Name", sheet.rows.first.cells.first.value)
+    assert_equal("", sheet.rows.last.cells.last.value)
   end
 
   
